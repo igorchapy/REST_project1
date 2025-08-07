@@ -18,9 +18,18 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
+# Allowed hosts depending on DEBUG
+if DEBUG:
+    ALLOWED_HOSTS = []
+else:
+    ALLOWED_HOSTS = [
+        host.strip()
+        for host in os.environ.get("ALLOWED_HOSTS", "").split(",")
+        if host.strip()
+    ]
 
-INTERNAL_IPS = ["127.0.0.1"]
+    if not ALLOWED_HOSTS:
+        raise RuntimeError("ALLOWED_HOSTS must be set when DEBUG is False")
 
 # Application definition
 INSTALLED_APPS = [
@@ -48,7 +57,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "cinema_service.urls"
+ROOT_URLCONF = "theatre_service.urls"
 
 TEMPLATES = [
     {
@@ -66,45 +75,29 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "cinema_service.wsgi.application"
+WSGI_APPLICATION = "theatre_service.wsgi.application"
 
 # Database
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("DB_NAME", "cinema"),
-        "USER": os.environ.get("DB_USER", "cinema_user"),
-        "PASSWORD": os.environ.get("DB_PASSWORD", "cinema_pass"),
-        "HOST": os.environ.get("DB_HOST", "db"),
-        "PORT": os.environ.get("DB_PORT", "5432"),
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": (
-            "django.contrib.auth.password_validation."
-            "UserAttributeSimilarityValidator"
-        ),
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        "NAME": (
-            "django.contrib.auth.password_validation."
-            "MinimumLengthValidator"
-        ),
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        "NAME": (
-            "django.contrib.auth.password_validation."
-            "CommonPasswordValidator"
-        ),
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        "NAME": (
-            "django.contrib.auth.password_validation."
-            "NumericPasswordValidator"
-        ),
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -129,21 +122,21 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # DRF and JWT settings
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    "DEFAULT_THROTTLE_CLASSES": [
-        "rest_framework.throttling.AnonRateThrottle",
-        "rest_framework.throttling.UserRateThrottle",
-    ],
-    "DEFAULT_THROTTLE_RATES": {
-        "anon": "10/day",
-        "user": "30/day",
-    },
+    # "DEFAULT_THROTTLE_CLASSES": [
+    #     "rest_framework.throttling.AnonRateThrottle",
+    #     "rest_framework.throttling.UserRateThrottle",
+    # ],
+    # "DEFAULT_THROTTLE_RATES": {
+    #     "anon": "10/day",
+    #     "user": "30/day",
+    # },
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
 }
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Cinema Service API",
+    "TITLE": "Theatre Service API",
     "DESCRIPTION": "Order cinema tickets",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
