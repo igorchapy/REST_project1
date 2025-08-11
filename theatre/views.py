@@ -26,7 +26,6 @@ class IsAdminOrIfAuthenticatedReadOnly(IsAuthenticated):
         return request.user and request.user.is_staff
 
 
-# 🎭 Genres
 class GenreViewSet(mixins.ListModelMixin,
                    mixins.CreateModelMixin,
                    viewsets.GenericViewSet):
@@ -34,8 +33,6 @@ class GenreViewSet(mixins.ListModelMixin,
     serializer_class = GenreSerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
-
-# 🎭 Actors
 class ActorViewSet(mixins.ListModelMixin,
                    mixins.CreateModelMixin,
                    viewsets.GenericViewSet):
@@ -43,15 +40,12 @@ class ActorViewSet(mixins.ListModelMixin,
     serializer_class = ActorSerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
-
-# 🏛 Theatre Halls
 class TheatreHallViewSet(viewsets.ModelViewSet):
     queryset = TheatreHall.objects.all()
     serializer_class = TheatreHallSerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
 
-# 🎬 Plays
 class PlayViewSet(viewsets.ModelViewSet):
     queryset = Play.objects.prefetch_related("genres", "actors")
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
@@ -89,7 +83,6 @@ class PlayViewSet(viewsets.ModelViewSet):
         return super().list(request, *args, **kwargs)
 
 
-# ⏱ Performances
 class PerformanceViewSet(viewsets.ModelViewSet):
     queryset = Performance.objects.select_related("play", "theatre_hall")
     serializer_class = PerformanceSerializer
@@ -122,7 +115,6 @@ class PerformanceViewSet(viewsets.ModelViewSet):
         return super().list(request, *args, **kwargs)
 
 
-# 📦 Reservations
 class ReservationViewSet(
     mixins.ListModelMixin,
     mixins.CreateModelMixin,
@@ -138,7 +130,6 @@ class ReservationViewSet(
         serializer.save(user=self.request.user)
 
 
-# 🎫 Tickets (only for admin, view-only)
 class TicketViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ticket.objects.select_related("performance", "reservation")
     serializer_class = TicketSerializer

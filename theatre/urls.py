@@ -11,6 +11,7 @@ from theatre.views import (
     TicketViewSet,
 )
 
+
 router = DefaultRouter()
 router.register(r"genres", GenreViewSet)
 router.register(r"actors", ActorViewSet)

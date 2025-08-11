@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🎭 Theatre API
 
 A RESTful Django-based API for managing theatre performances, users, and ticket bookings.
@@ -56,3 +57,6 @@ source venv/bin/activate
 pip install -r requirements.txt
 python manage.py runserver
 
+=======
+# REST_project1
+>>>>>>> a61099c3b650cc6fa6a2d6f16f710b4f843d6f7d

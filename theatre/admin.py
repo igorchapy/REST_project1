@@ -4,6 +4,7 @@ from .models import (
     Play, Performance, Reservation, Ticket
 )
 
+
 admin.site.register(Genre)
 admin.site.register(Actor)
 admin.site.register(TheatreHall)

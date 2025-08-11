@@ -3,7 +3,6 @@ from rest_framework import status
 from django.urls import reverse
 from theatre.models import Play
 
-
 class PlayAPITestCase(APITestCase):
     def setUp(self):
         self.play = Play.objects.create(title="Macbeth", description="Tragedy")
