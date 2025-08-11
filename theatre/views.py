@@ -2,8 +2,6 @@ from datetime import datetime
 
 from rest_framework import viewsets, mixins
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from rest_framework.response import Response
-from django.db.models import Count
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from drf_spectacular.types import OpenApiTypes
 
@@ -18,7 +16,7 @@ from .serializers import (
     ReservationSerializer, TicketSerializer
 )
 
-# Optional: Custom permission - allows read for authenticated users, full access for admin
+
 class IsAdminOrIfAuthenticatedReadOnly(IsAuthenticated):
     def has_permission(self, request, view):
         if request.method in ("GET", "HEAD", "OPTIONS"):

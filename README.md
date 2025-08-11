@@ -51,7 +51,7 @@ GET – Retrieve data • POST – Create • PUT/PATCH – Update • DELETE �
 How to run this project
 
 git clone https://github.com/igorchapy/REST_project1.git
-cd bookstore-api
+cd Restproject
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
